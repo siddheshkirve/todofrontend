@@ -2,6 +2,8 @@
     <div class="container">
         <h2>Enter your Username here</h2>
         <input type="text"  placeholder="eg:siddheshkirve" v-model="username" required>
+                <h2>Enter todo</h2>
+        <input type="text"  placeholder="enter todo" v-model="todo" required>
         <div class="btn">
             <span>
                 <button @click="onSubmit">SUBMIT</button>
@@ -19,14 +21,31 @@ export default {
     data() {
         return {
             username: "",
+            todo: ""
         };
     },
     methods: {
         onSubmit(){
-            axios.post('http://localhost:8080/todos/:username',this.username)
+            if(this.username === "") {
+                alert("Username must not be empty.")
+               return;
+
+            }
+            if(this.todo === "") {
+                alert("Todo must not be empty.")
+                return;
+            }
+            axios.post('http://localhost:8080/todos/' + this.username, {todo:this.todo})
+            .then((res) => {
+                console.log(res)
+                this.clearInput();
+            })
+            
+
         },
         clearInput() {
             this.username = "";
+            this.todo = ""
         },
     }
 }
