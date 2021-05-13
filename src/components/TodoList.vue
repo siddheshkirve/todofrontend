@@ -5,7 +5,15 @@
       <li v-for="(todo, index) in todos" :key="index">
         <label>
           <input type="checkbox" />
-          <span>{{ todo }}</span>
+          <span
+            >{{ todo }}
+            <button v-on:click="deleteTodo()" class="btn btn-danger btn-sm">
+              delete
+            </button>
+            <button v-on:click="updateTodo()" class="btn btn-danger btn-sm">
+              update
+            </button>
+          </span>
         </label>
       </li>
     </ul>
@@ -25,12 +33,19 @@ import axios from "axios";
 export default {
   data() {
     return {
-      todoText: "",
+      todo: "",
       todos: [],
       username: ""
     };
   },
   methods: {
+    // async deleteTodo() {
+    //   this.todos.delete({ todoText });
+    // },
+
+    // async updateTodo() {
+    //   this.todos.update({ text: newTodo });
+    // },
     addTodo: function() {
       var newTodo = this.todoText.trim();
       if (!newTodo) {
@@ -50,18 +65,17 @@ export default {
         );
         console.log(response);
         if (response.status == 200 && response.data.ok) {
-          let todos = response.data.userTodo.map(todo => todo.todos);
-          let todo = todos.map(todo => todo.todo);
-          this.todo = todo.map(todo => todo.todo);
+          let todos = response.data.userTodo[0].todos;
+          // this.todos = todos.todo;
+          this.todos = todos.map(todo => todo.todo);
+          console.log(todos);
         }
       } catch (error) {
         console.log(error);
       }
     }
   },
-  async created() {
-    // await axios.get("http://localhost:3000/all");
-  }
+  async delete() {}
 };
 </script>
 
